@@ -14,6 +14,7 @@ import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { debug } from 'util';
 
 /**
  * main app component
@@ -71,6 +72,7 @@ export class AppComponent implements OnInit {
   instance: string;
   public orgName: string;
   public enableTenantHeader: string;
+  tenantname = 'Sunbird';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -291,9 +293,17 @@ export class AppComponent implements OnInit {
    * set app title and favicon after getting tenant data
    */
   private setPortalTitleLogo(): void {
-    this.tenantService.tenantData$.subscribe(data => {
+    localStorage.setItem('tenant', this.slug);
+    if (this.slug === 'space') {
+         this.tenantname = 'SPace';
+    } else if (this.slug === 'sbwb') {
+          this.tenantname = 'World Bank';
+    } else if (this.slug === 'sunbirdorg') {
+          this.tenantname = 'Sunbird';
+    }
+  this.tenantService.tenantData$.subscribe(data => {
       if (!data.err) {
-        document.title = this.userService.rootOrgName || data.tenantData.titleName;
+        document.title = this.tenantname || this.userService.rootOrgName ;
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
       }
     });

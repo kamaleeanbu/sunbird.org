@@ -9,5 +9,5 @@ mochawesome-report
 /npm-debug.log
 .coverrun
 /src/app/log
-
-
+package-lock.json
+package.json

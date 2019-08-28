@@ -1,3 +1,4 @@
+localStorage.setItem("tenant","sbwb");
 window.sr = ScrollReveal();
 sr.reveal('.foo');
 sr.reveal('.bar');
@@ -7,7 +8,6 @@ $(document).ready(function() {
 	$("#owl-demo").owlCarousel({
 	  navigation : true
 	});
-   
   });
  
 
