@@ -367,7 +367,7 @@ export class SpaceDataDrivenComponent extends MyAsset implements OnInit, OnDestr
     if (this.contentType === 'studymaterial' && this.uploadSuccess === true) {
       this.workSpaceService.createAsset(requestData).subscribe(res => {
         console.log('after creating asset res = ', res);
-        localStorage.setItem(res.result.node_id, JSON.stringify('Review'));
+        localStorage.setItem(res.result.node_id, JSON.stringify('Draft'));
         localStorage.setItem('creator', JSON.stringify(this.userService.userid));
         const state = JSON.parse(localStorage.getItem(res.result.node_id));
         const creatorId = JSON.parse(localStorage.getItem(res.result.node_id));
@@ -378,6 +378,7 @@ export class SpaceDataDrivenComponent extends MyAsset implements OnInit, OnDestr
           this.updateAssetStatus(res.result.node_id, 'file');
           this.toasterService.info('Redirected to upload File Page');
           this.routetoediter();
+          // this.uploadFileEvent(); 
         } else if (this.uploadLink === 'uploadContent') {
           this.toasterService.success('Asset created successfully');
           this.routeToContentEditor({ identifier: res.result.node_id });
@@ -397,7 +398,7 @@ export class SpaceDataDrivenComponent extends MyAsset implements OnInit, OnDestr
   updateAssetStatus(assetId, state) {
     let assetStatus;
     if (state === 'file') {
-      assetStatus = 'Review';
+      assetStatus = 'Draft';
     } else {
       assetStatus = 'Draft';
     }
@@ -450,8 +451,44 @@ export class SpaceDataDrivenComponent extends MyAsset implements OnInit, OnDestr
       this.router.navigate(['/myassets']);
     }, 1700);
     setTimeout(() => {
-      this.router.navigate(['myassets/create/edit/generic', this.contentId, this.status, 'Draft']);
-    }, 1800);
+      // this.router.navigate(['myassets/create/edit/generic', this.contentId, this.status, 'Draft']);
+     this.router.navigate(['myassets/edit/generic']);
+   }, 1800);
   }
+
+  uploadFileEvent() {
+      console.log('fileList', this.fileList);
+      const data = {
+        fileName: this.fileList.name
+      };
+      const request = {
+        content: data
+      };
+      console.log('request in upload file', request);
+      // debugger;
+      this.editorService.uploadUrl(request, this.contentId).subscribe(res => {
+        console.log('file upload responce = ', res);
+        this.toasterService.success('uploaded successfully');
+        const pdfurl = res.result.pre_signed_url.substring(0, res.result.pre_signed_url.lastIndexOf('?'));
+        this.workSpaceService.uploadPreSigned(res.result.pre_signed_url, this.fileList).subscribe(ress => {
+          console.log('pre singned url responce = ', ress);
+          this.editorService.upload(pdfurl, this.contentId).subscribe(response => {
+            console.log('ress', response);
+  
+          });
+          this.goToCreate();
+  
+        }, err => {
+          this.toasterService.error('asset creation failed');
+        }
+  
+        );
+  
+        // this.editorService.upload()
+      }, err => {
+        this.toasterService.error('asset creation failed');
+      });
+  
+    }
 
 }

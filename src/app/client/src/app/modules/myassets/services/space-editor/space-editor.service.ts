@@ -39,6 +39,7 @@ export class SpaceEditorService {
         this.contentService = contentService;
         this.baseUrl = this.configService.urlConFig.URLS.CONTENT_PREFIX;
         this.publicDataService = publicDataService;
+        this.uploadService = uploadservice;
     }
 
     /**

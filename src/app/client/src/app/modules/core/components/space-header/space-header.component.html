@@ -31,7 +31,27 @@
                                             </div>
                                         </div>
                                         <!-- <div class="modal-body"> -->
-                                                <table class="table table-striped" *ngIf="reviewAssetData.length > 0">
+                                                <table class="table table-striped" *ngIf="reviewAssetData.length > 0 && permissionService.permissionAvailable" appPermission
+                                                        [permission]='upForReviewRole'>
+                                                        <thead>
+                                                          <tr class="tr">
+                                                            <!-- <th>Asset Id</th> -->
+                                                            <th>Name of the Asset</th>
+                                                            <th>Status</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody >
+                                                          <tr *ngFor="let content of reviewAssetData">
+                                                            <!-- <td>{{content.identifier}}</td> -->
+                                                            <td>{{content.name}}</td>
+                                                            <!-- <td *ngIf="content.status === 'Draft'">Rejected</td> -->
+                                                            <!-- <td *ngIf="content.status === 'Live'">Published</td> -->
+                                                            <td *ngIf="content.status === 'Review'">Yet to Review</td>
+                                                          </tr>
+                                                        </tbody>
+                                                </table>
+                                                <table class="table table-striped" *ngIf="reviewAssetData.length > 0 && permissionService.permissionAvailable" appPermission
+                                                        [permission]='myActivityRole'>
                                                         <thead>
                                                           <tr class="tr">
                                                             <!-- <th>Asset Id</th> -->
@@ -45,7 +65,7 @@
                                                             <td>{{content.name}}</td>
                                                             <td *ngIf="content.status === 'Draft'">Rejected</td>
                                                             <td *ngIf="content.status === 'Live'">Published</td>
-                                                            <td *ngIf="content.status === 'Review'">Yet to Review</td>
+                                                            <td *ngIf="content.status === 'Review'">Sent to Review</td>
                                                           </tr>
                                                         </tbody>
                                                 </table>

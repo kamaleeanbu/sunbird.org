@@ -165,6 +165,7 @@ export class DataService {
    * @param {RequestParam} requestParam interface
   */
     post(requestParam: RequestParam): Observable<ServerResponse> {
+      console.log('inside post method');
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
