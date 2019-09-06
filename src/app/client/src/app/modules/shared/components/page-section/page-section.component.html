@@ -33,7 +33,7 @@
                 <!--Course & Resourse Card-->
                 <ng-template #contentcard>
                         <app-card appContentDirection [data]="content" appTelemetryInteract
-                        [telemetryInteractEdata]="cardInteractEdata" *ngIf="slug === 'sbwb'"
+                        [telemetryInteractEdata]="cardInteractEdata" *ngIf="slug !== 'sunbirdorg' && slug !== 'space'"
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
                         (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
                     </app-card>
